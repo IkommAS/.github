@@ -14,3 +14,4 @@
 
 ### Wikis:
 * **[Workloads & Repo level scripts](https://github.com/IkommAS/workflows/wiki)**
+* **[Repository Template](https://github.com/IkommAS/workflows/wiki/Template-Repositories)**
