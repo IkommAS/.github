@@ -13,5 +13,5 @@
 ## [Platform Project](https://github.com/orgs/IkommAS/projects/4/views/5)
 
 ### Wikis:
-* **[Workloads & Repo level scripts](https://github.com/IkommAS/workflows/wiki)**
+* **[Workloads & Organization level scripts](https://github.com/IkommAS/workflows/wiki)**
 * **[Repository Template](https://github.com/IkommAS/workflows/wiki/Template-Repositories)**
