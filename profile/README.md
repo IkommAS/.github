@@ -15,4 +15,4 @@
 ### Wikis:
 * **[Workloads & Organization level scripts](https://github.com/IkommAS/workflows/wiki)**
 * **[Repository Template](https://github.com/IkommAS/workflows/wiki/Template-Repositories)**
-* **[Automatic version and nuget deploy action](https://github.com/IkommAS/workflows/wiki/Nuget-Deploy-Action)
+* **[Automatic version and nuget deploy action](https://github.com/IkommAS/workflows/wiki/Nuget-Deploy-Action)**
