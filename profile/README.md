@@ -12,5 +12,5 @@
 -->
 ## [Platform Project](https://github.com/orgs/IkommAS/projects/4/views/5)
 ## [WIKI](https://ikommas.github.io/wiki/)
-### [Local Wiki](https://github.com/IkommAS/workflows/wiki):
+### [Local Wiki](https://github.com/IkommAS/workflows/wiki)
 
