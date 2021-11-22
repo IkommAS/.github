@@ -12,7 +12,5 @@
 -->
 ## [Platform Project](https://github.com/orgs/IkommAS/projects/4/views/5)
 ## [WIKI](https://ikommas.github.io/wiki/)
-### Wikis:
-* **[Workloads & Organization level scripts](https://github.com/IkommAS/workflows/wiki)**
-* **[Repository Template](https://github.com/IkommAS/workflows/wiki/Template-Repositories)**
-* **[Automatic version and nuget deploy action](https://github.com/IkommAS/workflows/wiki/Nuget-Deploy-Action)**
+### [Local Wiki](https://github.com/IkommAS/workflows/wiki):
+
