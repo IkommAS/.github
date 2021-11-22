@@ -11,7 +11,7 @@
 🧙 Remember, you can do mighty things with the power of [Markdown](https://docs.github.com/github/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax)
 -->
 ## [Platform Project](https://github.com/orgs/IkommAS/projects/4/views/5)
-
+## [WIKI](https://ikommas.github.io/wiki/)
 ### Wikis:
 * **[Workloads & Organization level scripts](https://github.com/IkommAS/workflows/wiki)**
 * **[Repository Template](https://github.com/IkommAS/workflows/wiki/Template-Repositories)**
