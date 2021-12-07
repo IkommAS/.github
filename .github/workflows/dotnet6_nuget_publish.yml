@@ -1,0 +1,111 @@
+name: Release to Nuget from release branch
+# This should only create a release when a PR is made towards the release branch and is completed successfully and has labels attached.
+# To run a release, create a pullrequest into the "release" branch and add the label(s) release-*bump*.
+# EXAMPLE: To relase a new Minor version: 
+#   add the label "release-minor" to the request. If the version is a alpha or beta build, add either "alpha" or "beta" label.
+#   When the request is merged, the pipeline should automatically bump the selected version, create a new release and deploy to nuget.
+on:
+  pull_request:
+    branches: 
+      - release
+    types: [closed]
+    
+jobs:
+  prepare-release:    
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    if: contains( github.event.pull_request.merged, 'true')
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: debug echo
+        run: |
+          echo base ref : ${{github.event.pull_request.base.ref}}
+          echo pr ref : ${{github.ref}}
+          echo PR merged status : ${{github.event.pull_request.merged}}
+      - name: 'Get Previous tag'
+        id: previoustag
+        uses: "WyriHaximus/github-action-get-previous-tag@v1"
+        with:
+          fallback: 1.0.0
+        env:
+          GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+      - name: 'Get next version'
+        id: semvers
+        uses: "WyriHaximus/github-action-next-semvers@v1"
+        with:
+          version: ${{ steps.previoustag.outputs.tag }}
+          
+      - name: Set beta
+        if: contains( github.event.pull_request.labels.*.name, 'beta')
+        run: echo "Prerelease=-beta" >> $GITHUB_ENV
+      - name: Set alpha
+        if: contains( github.event.pull_request.labels.*.name, 'alpha')
+        run: echo "Prerelease=-alpha" >> $GITHUB_ENV
+        
+      - name: major
+        if: contains( github.event.pull_request.labels.*.name, 'release-major')
+        run: |
+          echo "RELEASE=major" >> $GITHUB_ENV
+          echo "Version=${{ steps.semvers.outputs.major }}${{ env.Prerelease }}" >> $GITHUB_ENV
+      - name: minor
+        if: contains( github.event.pull_request.labels.*.name, 'release-minor')
+        run: |
+          echo "RELEASE=minor" >> $GITHUB_ENV
+          echo "Version=${{ steps.semvers.outputs.minor }}${{ env.Prerelease }}" >> $GITHUB_ENV
+      - name: patch
+        if: contains( github.event.pull_request.labels.*.name, 'release-patch')
+        run: |
+          echo "RELEASE=patch" >> $GITHUB_ENV
+          echo "Version=${{ steps.semvers.outputs.patch }}${{ env.Prerelease }}" >> $GITHUB_ENV
+
+     
+
+      - name: control release env
+        run: |
+          if [[ -z "${{ env.RELEASE }}" ]];
+          then 
+            echo "No release label found, release will not continue. If you with to run a release, include a release label"
+            exit 1
+          else 
+            exit 0
+          fi
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: 6.x
+          source-url: ${{ env.NUGET_URL }}
+        env:
+          NUGET_AUTH_TOKEN: ${{ secrets.IKOMM_READ_PACKAGES_TOKEN }}
+          NUGET_URL: https://nuget.pkg.github.com/IkommAS/index.json    
+
+      - name: Build
+        run: dotnet build *.sln --configuration Release /p:Version=$Version
+      - name: Test
+        run: dotnet test *.sln --configuration Release /p:Version=$Version --no-build
+      - name: Pack
+        run: dotnet pack *.sln --configuration Release /p:Version=$Version --no-build --output .
+      - name: Push
+        run: dotnet nuget push *.nupkg --source https://nuget.pkg.github.com/IkommAS/index.json --api-key ${GITHUB_TOKEN}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#      - name: Bump version and push tag
+#        id: tag_version
+#        uses: mathieudutour/github-tag-action@v5.6
+#        with:
+#          github_token: ${{ secrets.GITHUB_TOKEN }}
+#          custom_tag: ${{env.Version}}
+     
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
+        with:
+          tag_name: $Version #${{ steps.tag_version.outputs.new_tag }}
+          release_name: Release ${{ steps.tag_version.outputs.new_tag }}
+          body: ${{ steps.tag_version.outputs.changelog }}
+          draft: true
+          prerelease: contains($Version , '-alpha') || contains($Version, '-beta')
