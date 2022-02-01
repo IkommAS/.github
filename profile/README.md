@@ -5,5 +5,5 @@
 
 
 ### [Public facing WIKI](https://ikommas.github.io/wiki/)
-### [Local developer WIKI](https://github.com/IkommAS/wiki/wiki)
+### [Local developer WIKI](https://github.com/IkommAS/internal-wiki/wiki)
 
