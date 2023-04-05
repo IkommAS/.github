@@ -1,0 +1,12 @@
+{
+    "name": "Hello World Organization Workflow",
+    "description": "IkommAS First WF-Template",
+    "iconName": "dependabot",
+    "categories": [
+        "Brainfuck"
+    ],
+    "filePatterns": [
+        "^README.md$",
+        ".*\\.md$"
+    ]
+}
